@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public static class Solutions {
     public static string HighAndLow(string a_numbers) {
@@ -138,13 +139,78 @@ public static class Solutions {
             if(a_m > 0){
                 long _v = (long)System.Numerics.BigInteger.Pow(_n+1, 3);
                 a_m -= _v;
-            }else if(a_m==0){
-                return _n;
-            }else if(a_m < 0){
-                return -1;
             }
+            else if(a_m==0) return _n;
+            else if(a_m < 0) return -1;
 
             _n++;
         }
+    }
+
+    public static string SongDecoder(string a_input) { 
+        return Regex.Replace(a_input.Replace("WUB", " "), @"\s+", " ").Trim();
+    }
+
+    public static int SquareDigits(int a_n) {
+        string _str = a_n.ToString();
+        string _result="";
+
+        for(int i=0;i<_str.Length;i++){
+            int _d = int.Parse(_str[i].ToString());
+            _result += _d*_d;
+        }        
+
+        return int.Parse(_result);
+    }
+
+    public static string GetMiddle(string a_s) {
+        return a_s.Substring((a_s.Length-1 )/2, a_s.Length%2==0 ? 2 : 1);
+    }
+
+    public static Dictionary<char, int> Count(string a_str) {
+        Dictionary<char, int> _result = new Dictionary<char, int>();
+
+        foreach(char _c in a_str){
+            if(_result.ContainsKey(_c)){
+                _result[_c] += 1;
+            }else{
+                _result.Add(_c, 1);
+            }
+        }
+
+        return _result;
+    }
+
+    public static string DuplicateEncode(string a_word) {
+        string _result="";
+
+        foreach(char _c in a_word){
+            if(a_word.Where(x => x.ToString().ToLower() == _c.ToString().ToLower()).Count() > 1){
+                _result += ")";
+            }else{
+                _result += "(";
+            }
+        }
+
+        return _result;
+    }
+
+    public static long[] SumDigPow(long a_a, long a_b) {
+        List<long> _result = new List<long>();
+
+        for(long i=a_a; i <= a_b; i++){
+            long _sum=0;
+            byte[] _digits = i.ToString().Select(x => byte.Parse(x.ToString())).ToArray();
+
+            for(int x=0; x<_digits.Length; x++){
+                _sum += (long)Math.Pow(_digits[x], x+1);
+            }
+
+            if(_sum==i){
+                _result.Add(i);
+            }
+        }
+
+        return _result.ToArray();
     }
 }
